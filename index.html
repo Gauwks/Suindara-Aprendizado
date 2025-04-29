@@ -4,18 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Suindara</title>
 </head>
 <body>
+
     <header>
         <nav>
-            <a href="">Home</a>
-            <a href=""></a>
-            <a href=""></a>
+            <img src="" alt="Logo">
+            <a href="páginas/home.html">Home</a>
+            <a href="páginas/livros.html">Livros</a>
+            <a href="páginas/autores.html">Autores</a>
+            <button id="cadastronav" onclick="document.getElementById('opcaoCadastro').showModal()">Faça Login/Cadastre-se</button>
         </nav>
     </header> 
-       <h1> Venha transformar pequenos livros em sucessos!</h1>
-       <button> <a href="leitorcad.html"> Sou leitor📖</a></button>
-       <button> <a href="autorcad.html"> Sou Autor✍</a></button>
+
+    <h1>Descubra novas Histórias!</h1>
+
+    <div class="botoesinicio">
+
+    <a href="login.html"><button>Login</button></a>
+    <button onclick="document.getElementById('opcaoCadastro').showModal()">Cadastre-se</button>
+
+    <dialog id="opcaoCadastro">
+        <h2>Quem é você?</h2>
+        <a href="cadastro/leitorcad.html"><button>Sou Leitor 📖</button></a>
+        <a href="cadastro/autorcad.html"><button>Sou Autor ✍️</button></a>
+        <br><br>
+        <button onclick="document.getElementById('opcaoCadastro').close()">Cancelar</button>
+    </dialog>
+   </div>
 </body>
 </html>
