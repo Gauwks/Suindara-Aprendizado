@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <title>Home</title>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <img src="" alt="Logo">
+            <a href="home.html">Home</a>
+            <a href="livros.html">Livros</a>
+            <a href="autores.html">Autores</a>
+            <button id="cadastronav" onclick="document.getElementById('opcaoCadastro').showModal()">Faça Login/Cadastre-se</button>
+            <input type="text" id="searchInput" placeholder="Pesquisar" />
+            <div id="results"></div>
+
+            <dialog id="opcaoCadastro">
+                <h2>Quem é você?</h2>
+                <a href="../cadastro e login/leitorcad.html"><button>Sou Leitor 📖</button></a>
+                <a href="../cadastro e login/autorcad.html"><button>Sou Autor ✍️</button></a>
+                <br><br>
+                <button onclick="document.getElementById('opcaoCadastro').close()">Cancelar</button>
+            </dialog>
+        </nav>
+    </header> 
+
+    
+  <div class="JS" id="JS">
+      <script>
+
+    const dbName = "livrosDB";
+    const storeName = "livros";
+
+    function abrirDB() {
+    return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName, 1);
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      const store = db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+      store.createIndex("titulo", "titulo", { unique: false });
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject("Erro ao abrir o banco");
+  });
+  }
+
+    async function salvarLivrosExemplo() {
+    const db = await abrirDB();
+    const tx = db.transaction(storeName, "readwrite");
+    const store = tx.objectStore(storeName);
+  
+  const livros = [
+    { titulo: "UMA FAMÍLIA INESPERADA PARA O CEO: Série Família Brusman - Livro I", autor: "Danielle Viegas", link: "https://www.goodreads.com/book/show/58794722-uma-fam-lia-inesperada-para-o-ceo" },
+    { titulo: "As Estrelas Caídas", autor: "Maria Lima", link: "https://mariaestrelas.com" },
+    { titulo: "Tecnologias do Amanhã", autor: "André Tech", link: "https://andrelivros.net" },
+  ];
+  
+  livros.forEach(livro => store.add(livro));
+  await tx.done;
+  console.log("Livros salvos");
+}
+
+
+    document.getElementById("searchInput").addEventListener("input", pesquisarLivros);
+
+    async function pesquisarLivros(event) {
+    const termo = event.target.value.toLowerCase();
+    const db = await abrirDB();
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+
+  const request = store.getAll();
+  request.onsuccess = () => {
+    const resultados = request.result.filter(livro =>
+      livro.titulo.toLowerCase().includes(termo) ||
+      livro.autor.toLowerCase().includes(termo)
+    );
+
+    mostrarResultados(resultados);
+  };
+  }
+
+    function mostrarResultados(livros) {
+   const container = document.getElementById("results");
+   container.innerHTML = "";
+
+  livros.forEach(livro => {
+    const card = document.createElement("div");
+    card.className = "livro-card";
+    card.innerHTML = `
+      <h3>${livro.titulo}</h3>
+      <p><strong>Autor:</strong> ${livro.autor}</p>
+      <a href="${livro.link}" target="_blank">Ver livro</a>
+    `;
+    container.appendChild(card);
+     });
+    }
+
+      </script>
+  </div>
+</body>
+</html>

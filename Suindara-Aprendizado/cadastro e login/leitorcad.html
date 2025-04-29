@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/cadastro.css">
+    <title>Cadastro Leitor</title>
+</head>
+<body>
+
+     <h1>Cadastro</h1>
+
+     <form>
+        <label>Nome Completo</label>
+        <input type="text" id="nome" required>
+
+        <label>Nome de Usuário</label>
+        <input type="text" id="username" required>
+
+        <label>Email</label>
+        <input type="email" id="email" required>
+
+        <label>Foto de Perfil</label>
+        <input type="file" name="foto" id="foto">
+
+        <label>Senha</label>
+        <input type="password" id="senha" required>
+
+        <label>Confirmar Senha</label>
+        <input type="password" id="confirmarsenha" required>
+           
+         <button onclick="ConcluirCadastroLeitor(event)">Cadastrar</button>
+         <button type="button" onclick="window.history.back()">Voltar</button>
+     </form>
+
+      <div class="JS" id="JS">
+     <script>
+          function ConcluirCasdastroLeitor(event){
+     event.preventDefault();
+
+     const nome = doccument.getElementById("nome").value;
+     const username = document.getElementById("username");
+     const email = document.getElementById("email").value;
+     const senha = document.getElementById("senha").value;
+     const confirmarsenha = document.getElementById("confirmarsenha").value;
+
+     if (senha != confirmarsenha) {
+       alert("As senhas não coincidem!")
+     }
+
+     const leitor = {
+       nome, 
+       username,
+       fotoPerfil,
+       email,
+       senha
+     };
+
+     const transaction = db.transaction(["leitores"], "readwrite");
+     const objectStore = transaction.objectStore("leitores");
+     const request = objectStore.add(leitor);
+   
+     request.onsuccess = function () {
+       alert("Cadastro feito com sucesso!");
+     };
+   
+     request.onerror = function () {
+       alert("Erro ao fazer o cadastro. Verifique se o email já está cadastrado.");
+     };
+
+
+   }
+
+   let db;
+
+   const request = indexedDB.open("CadastroAutoresDB", 1);
+   
+   request.onerror = function (event) {
+     console.error("Erro ao abrir o banco de dados:", event.target.errorCode);
+   };
+   
+   request.onsuccess = function (event) {
+     db = event.target.result;
+     console.log("Banco de dados aberto com sucesso");
+   };
+   
+   request.onupgradeneeded = function (event) {
+    db = event.target.result;
+  
+    const leitoresStore = db.createObjectStore("leitores", { keyPath: "id", autoIncrement: true });
+    leitoresStore.createIndex("email", "email", { unique: true });
+  };
+     </script>
+  </div>   
+</body>
+</html>

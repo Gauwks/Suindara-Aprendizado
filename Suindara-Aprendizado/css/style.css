@@ -1,0 +1,63 @@
+body{
+    font-family: 'Lora', sans-serif;
+    font-weight: 500;
+}
+
+h1, h2{
+   font-family: 'Montserrat', sans-serif;
+   font-weight: 800;
+}
+
+h1{
+    text-align: center;
+    padding: 100px;
+}
+
+nav{
+   display: flex;
+   justify-content: space-between; 
+   padding: 10px;
+   padding-left: 70px;
+   background-color: white;
+}
+
+nav a{
+    text-decoration:none ;
+}
+
+#cadastronav{
+    background-color: rgba(42, 163, 15, 0.881);
+    color: white;
+    border: 4px;
+    border-radius: 10px;
+    font-size: 15px;
+    height: 30px;
+}
+
+#cadastronav:hover{
+   background-color: rgba(35, 143, 11, 0.881);
+}
+
+button {
+    cursor: pointer;
+    will-change: transform;
+    transform: translateZ(0);
+    transition: transform 0.3s ease;
+    border: 4px;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: rgba(90, 63, 110, 0.881);
+    color: white;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+  }
+
+.botoesinicio {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+}
+    
